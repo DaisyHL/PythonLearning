@@ -3,19 +3,9 @@
 Created on Tue May 28 2019
 
 @author: YangYang
-"""
 
-"""
 将一串数组以“Z 形”放入 n 个桶中
-(第一列正着放，第二列倒着放)
-例：
-数组：[1, 2, 3, 4, 5, 6, 7]，将其放入 3 个桶中
-输出：
-[
-    [1, 6, 7],
-    [2, 5],
-    [3, 4],
-]
+首先实现功能：第一列正着放，第二列倒着放
 """
 # 方法一
 def ListZ(data,step):
@@ -42,12 +32,7 @@ data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 step = 4
 Zdata = ListZ(data,step)
 print(Zdata)
-
-
-'''    
-# 根据step重新排列数据
-data_step = [data[i:i+step] for i in range(0,len(data),step)]   
-'''          
+        
 
 # 方法二
 def split_bucket(array, n):
@@ -60,4 +45,43 @@ def split_bucket(array, n):
         bucket.append(num)
     return buckets
 if __name__ == '__main__':
-    print(split_bucket([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],4))
+    data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    step = 4
+    Zdata = split_bucket(data,step)
+    print(Zdata)
+
+# 进阶
+# 将一串数组以“Z 形”放入 n 个桶中
+def split_bucket(array, step):
+    array_step = [array[i:i+2*step-2] for i in range(0,len(array),2*step-2)] 
+    buckets = [[] for _ in range(step)]
+    for i, num1 in enumerate(array_step):
+        for j, num2 in enumerate(num1):    
+            if (j // step)  == 0:
+                bucket = buckets[j % step]
+                bucket.append(num2)
+            else:
+                for k in range(step):
+                    if k == (j%step+1):
+                        bucket = buckets[-k-1]
+                        bucket.append(str(num2))
+                    else:
+                        bucket = buckets[-k-1]
+                        bucket.append(" ")
+    return buckets
+if __name__ == '__main__':
+    array = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    array = list(array)
+    step = 6    
+    Zdata = split_bucket(array,step)
+    for i in range(step):
+        print("".join('%s' %id for id in Zdata[i]))
+
+    
+    
+    
+    
+    
+    
+    
+    
